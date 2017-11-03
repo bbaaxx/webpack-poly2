@@ -1,0 +1,63 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../pink-button/pink-button.html">
+
+<dom-module id="polypink-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[timer]]!</h2>
+    <pink-button></pink-button>
+    <br>
+    <button class="notAPinkButton">not a pink button</button>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class PolypinkApp extends Polymer.Element {
+      static get is() { return 'polypink-app'; }
+      static get properties() {
+        return {
+          dispatch$: {
+            type: Object
+          },
+          store$: {
+            type: Object
+          },
+          timer: {
+            type: String,
+            value: 'polypink-app'
+          }
+        };
+      }
+
+      ready() {
+        super.ready();
+
+        const dispatch$ = this.get('dispatch$');
+        const store$ = this.get('store$');
+
+        const clicks$ = Rx.Observable.fromEvent(this, 'click')
+          .mapTo(prev => ({ ...prev, timer: prev.timer + 100 }));
+        const timers$ = Rx.Observable
+          .interval(1000)
+          .map(x => prev => ({ ...prev, timer: prev.timer + x }));
+
+        store$.subscribe({ next: this.updateTimer.bind(this)});
+        Rx.Observable.merge(clicks$, timers$)
+          .subscribe({ next: reducer => dispatch$.next(reducer) });
+      }
+
+      updateTimer({ timer }) {
+        this.set('timer', timer)
+      }
+    }
+
+    window.customElements.define(PolypinkApp.is, PolypinkApp);
+  </script>
+</dom-module>

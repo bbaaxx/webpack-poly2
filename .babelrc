@@ -1,0 +1,13 @@
+{
+  "presets": ["@babel/env"],
+  "plugins": [
+    "transform-object-rest-spread",
+    "transform-es2015-destructuring",
+    "transform-class-properties",
+    "transform-custom-element-classes",
+    "transform-es2015-classes",
+    ["babel-plugin-transform-builtin-classes", {
+      "globals": ["Array", "Error", "HTMLElement"]
+    }]
+  ]
+}

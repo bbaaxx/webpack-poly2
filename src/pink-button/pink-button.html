@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="pink-button">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <button>[[buttonLabel]]!</button>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class PinkButton extends Polymer.Element {
+      static get is() { return 'pink-button'; }
+      static get properties() {
+        return {
+          buttonLabel: {
+            type: String,
+            value: 'I am a pink button'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(PinkButton.is, PinkButton);
+  </script>
+</dom-module>
